@@ -15,6 +15,8 @@ spec:
       containers:
       - image: okteto/hello-world:python
         name: hello-world
+        ports:
+        - containerPort: 5000
 
 ---
 
@@ -22,12 +24,11 @@ apiVersion: v1
 kind: Service
 metadata:
   name: hello-world
-  annotations:
-    dev.okteto.com/auto-ingress: "true"
 spec:
-  type: ClusterIP  
+  type: LoadBalancer  
   ports:
   - name: "hello-world"
     port: 8080
+    targetPort: 5000
   selector:
     app: hello-world
